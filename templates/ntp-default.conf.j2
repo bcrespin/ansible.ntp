@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+
+{% for server in ntp_config_server %}
+server {{ server }} iburst
+{% endfor %}
+
+{% if ntp_mode == 'client' %}
+restrict default ignore
+restrict -6 default ignore
+{% for server in ntp_config_server %}
+restrict {{ server }} nomodify nopeer noquery notrap
+{% endfor %}
+{% else %}
+restrict default limited kod nomodify notrap nopeer noquery
+restrict -6 default limited kod nomodify notrap nopeer noquery 
+{% endif %}
+
+restrict 127.0.0.1
+restrict -6 ::1
+restrict 127.127.1.0
+
+driftfile /var/lib/ntp/ntp.drift

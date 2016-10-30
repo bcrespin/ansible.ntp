@@ -1,0 +1,4 @@
+---
+ntp_support: 'true'
+ntp_need_install: 'true'
+ntp_service_name: 'ntpd'

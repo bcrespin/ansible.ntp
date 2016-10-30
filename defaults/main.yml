@@ -1,0 +1,9 @@
+---
+ntp_pkg_state: 'present'
+ntp_package_name: 'ntp'
+ntp_service_state: 'started'
+ntp_service_enabled: 'true'
+ntp_service_name: 'ntp'
+ntp_mode: 'client'
+ntp_dest_file: '/etc/ntp.conf'
+ntp_source_file: 'ntp-default.conf.j2'

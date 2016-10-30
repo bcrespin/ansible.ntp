@@ -1,0 +1,11 @@
+---
+- name: Install required packages with yum
+  yum: name={{ ntp_package_name }} state={{ ntp_pkg_state }} 
+  when: ansible_pkg_mgr == 'yum'
+  tags: [ 'package' , 'ntp' ]
+
+- name: Install required packages with apt
+  apt: name={{ ntp_package_name }} state={{ ntp_pkg_state }} update_cache=yes cache_valid_time=3600
+  when: ansible_pkg_mgr == 'apt'
+  tags: [ 'package' , 'ntp' ]
+

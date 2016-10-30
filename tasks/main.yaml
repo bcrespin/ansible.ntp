@@ -1,0 +1,34 @@
+---
+- name: Gathering OS specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+      - "{{ ansible_distribution }}.{{ ansible_distribution_release }}.yml"
+      - "{{ ansible_distribution }}.yml"
+      - "{{ ansible_os_family }}.yml"
+      skip: 'true'
+  tags: [ 'configuration', 'package' ,  'service' , 'ntp' ]
+
+- name: Check unsupported OS 
+  when: ntp_support is undefined
+  debug: "msg=' ***** {{ ansible_os_family }} NOT SUPPORTED, SKIPPING ROLE! ***** ' "
+  tags: [ 'configuration', 'ntp' ]
+
+- include: install.yml
+  when:
+    - ntp_need_install
+    - ntp_support is defined
+
+- name: Copy the generated ntp.conf 
+  template: src={{ ntp_source_file }} dest={{ ntp_dest_file }}
+  when: 
+    - ntp_support is defined
+  notify:
+  - Restart ntp
+  tags: [ 'configuration', 'service' , 'ntp' ]
+
+- name: Manage service
+  when: ntp_support is defined
+  service: name={{ ntp_service_name }} state={{ ntp_service_state }} enabled={{ ntp_service_enabled }}
+  tags: [ 'service' , 'ntp' ] 
+
