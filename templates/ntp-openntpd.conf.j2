@@ -1,0 +1,24 @@
+# {{ ansible_managed }}
+
+{% for server in ntp_config_server %}
+servers {{ server }}
+{% endfor %}
+
+{% if ntp_mode == 'client' %}
+# client mode
+listen on 127.0.0.1
+listen on ::1
+{% else %}
+# server mode
+{% for listen in  ntp_openntpd_listen %}
+listen on  {{ listen }}
+{% endfor %}
+{% endif %}
+
+{% for sensor in ntp_openntpd_sensor %}
+sensor  {{ sensor }}
+{% endfor %}
+
+{% for constraint in ntp_openntpd_constraints %}
+constraints from "{{ constraint }}"
+{% endfor %}

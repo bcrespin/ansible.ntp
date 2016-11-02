@@ -7,3 +7,8 @@ ntp_service_name: 'ntp'
 ntp_mode: 'client'
 ntp_dest_file: '/etc/ntp.conf'
 ntp_source_file: 'ntp-default.conf.j2'
+
+# specific to OpenBSD ntp 
+ntp_openntpd_listen: ['*']
+ntp_openntpd_sensor: ['*']
+ntp_openntpd_constraints: ['https://www.google.com']
