@@ -16,8 +16,9 @@
 
 - include: install.yml
   when:
-    - ntp_need_install
+    - ntp_need_install is defined
     - ntp_support is defined
+    - ntp_need_install == true
 
 - name: Copy the generated ntp.conf 
   template: src={{ ntp_source_file }} dest={{ ntp_dest_file }}
